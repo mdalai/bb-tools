@@ -34,7 +34,8 @@ class htmlEdit(object):
 
     def youtubeEmbeddedMaker(self,htmlText):
         # Get Youtube URLs and Youtube ID
-        pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
+        #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
+        pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|v/|.+\?v=)?([^&=%\?]{11})')
         yt_url_comp = re.findall(pattern,htmlText) # component
         if yt_url_comp == []:
             return
