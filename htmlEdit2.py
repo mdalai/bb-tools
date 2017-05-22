@@ -35,11 +35,13 @@ class htmlEdit(object):
     def youtubeEmbeddedMaker(self,htmlText):
         # Get Youtube URLs and Youtube ID
         #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
-        pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|v/|.+\?v=)?([^&=%\?]{11})')
+        #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|v/|.+\?v=)?([^&=%\?]{11})')
+        pattern = re.compile(r'(href=")(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
         yt_url_comp = re.findall(pattern,htmlText) # component
+        #print yt_url_comp
         if yt_url_comp == []:
             return
-        yt_urls = [(''.join(c),c[-1]) for c in yt_url_comp]
+        yt_urls = [(''.join(c[1:]),c[-1]) for c in yt_url_comp]
         #yt_urls = list(set(yt_urls))
         #print yt_urls
 

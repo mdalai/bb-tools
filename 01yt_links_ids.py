@@ -33,15 +33,17 @@ txtHTML1='''
 '''
 
 #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
-pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
+#pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
 #pattern1 = re.compile(r'https?://www\.youtube|youtu)\.(com|be)/(watch\?v=|embed/|v/|.+\?v=)([^&=%\?]{11}))')
+pattern = re.compile(r'(href=")(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
 Youtube_urls = re.findall(pattern,txtHTML)
 #Youtube_urls2 = re.findall(pattern1,txtHTML)
 #Youtube_urls2 = re.match(pattern1,txtHTML)
 
 print Youtube_urls
 
-a = [(''.join(c),c[-1]) for c in Youtube_urls]
+#a = [(''.join(c),c[-1]) for c in Youtube_urls]
+a = [(''.join(c[1:]),c[-1]) for c in Youtube_urls] # disinclude 'href="'
 print a
 
 b = [c[1] for c in a]
