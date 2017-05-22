@@ -12,5 +12,8 @@ The tool is developed to make instructional design job easier and simple.  This 
 Before using this tool, you have to get the html source code first. Otherwise, it won't work.
 
 After your html code is ready, double click the 'htmlEditUI2.py', the following window should be openned:
+![alt text](https://github.com/mdalai/bb-tools/blob/master/assets/htmlEdit.PNG "work window")
+
+Then, we paste the HTML code into the first text box. Then, click the button looks like ![alt text](https://github.com/mdalai/bb-tools/blob/master/assets/btn.PNG "submit button"). A new html code will be generated in the second text box. You just need to copy all the new html code and paste it into the Blackboard. The new html code is generated solving three tasks mentioned in above. In the bottom, the code will also generate a description which includes how many SPAN tags are deleted, how many “Open to new Window: are handled and how many Youtube videos are embedded.
 
 
