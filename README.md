@@ -24,6 +24,11 @@ Before using this tool, you have to get the html source code first. Otherwise, i
 After your html code is ready, double click the 'bb_tools_UI.py', the following window should be openned:
 ![alt text](https://github.com/mdalai/bb-tools/blob/master/assets/htmlEdit.PNG "work window")
 
-Then, we paste the HTML code into the first text box. Then, click the button looks like ![alt text](https://github.com/mdalai/bb-tools/blob/master/assets/btn.PNG "submit button"). A new html code will be generated in the second text box. You just need to copy all the new html code and paste it into the Blackboard. The new html code is generated solving three tasks mentioned in above. In the bottom, the code will also generate a description which includes how many SPAN tags are deleted, how many “Open to new Window: are handled and how many Youtube videos are embedded.
+Then, we paste the HTML code into the first text box. Then, click the button looks like ![alt text](https://github.com/mdalai/bb-tools/blob/master/assets/btn.PNG "submit button"). A new html code will be generated in the second text box. You just need to copy all the new html code and paste it into the Blackboard. The new html code is generated solving three tasks mentioned in above. In bottom textbox, the code will also generate a report which includes:
+  - how many SPAN tags are deleted
+  - how many links are set to "Open to new Window"
+  - how many Youtube videos were embedded
+  - shows the list of broken Youtube URLs if there is
+  - shows the list of youtube URLs that are unable to embed. 
 
 
