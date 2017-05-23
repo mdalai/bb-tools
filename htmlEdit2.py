@@ -96,7 +96,7 @@ class htmlEdit(object):
 
     def url2hyperlink(self,htmlText,youtubeurl,title):
         pos = htmlText.find('>%s'%youtubeurl)
-        txthtml = htmlText[:pos+1] + "Youtube:"+ title + htmlText[pos+1+len(youtubeurl):]      
+        txthtml = htmlText[:pos+1] + "Youtube: "+ title + htmlText[pos+1+len(youtubeurl):]      
         return txthtml
 
 
