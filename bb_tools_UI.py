@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
-from htmlEdit import htmlEdit
+from htmlEdit2 import htmlEdit
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -26,7 +26,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_Window):
         txtHTML,counter = editHTML.linkOpenNewTag(txtHTML)
         #print "Added %s BLANK target" %counter
         self.txt_report.append("Added %s BLANK target."%counter)
-        txtHTML,counter,youtube_notallow_embed,youtube_broken_links = editHTML.youtubeEmbeddedMaker(txtHTML)
+        txtHTML,counter,youtube_notallow_embed,youtube_broken_links,youtube_already_embed,counter2 = editHTML.youtubeEmbeddedMaker(txtHTML)
         #print "Added %s Embedded Youtube" %counter
         self.txt_report.append("Added %s Embedded Youtube Videos."%counter)
         if youtube_notallow_embed:
@@ -35,6 +35,11 @@ class MyApp(QtWidgets.QMainWindow, Ui_Window):
         if youtube_broken_links:
             # print "Following YOUTUBE links are broken links: ", youtube_broken_links
             self.txt_report.append("Following YOUTUBE links are broken links: %s"%youtube_broken_links)
+        if youtube_already_embed:
+            self.txt_report.append("Following YOUTUBE links are already embedded: %s"%youtube_already_embed)
+
+        self.txt_report.append("Transformed %s Youtube URLs into Hyperlinks."%counter2)
+            
         self.txt_output.setPlainText(txtHTML)
       
 

@@ -2,20 +2,8 @@ import sys
 import urllib, json
 import re
 from bs4 import BeautifulSoup
+import youtube_api
 
-
-# check YOUTUBE videos with ID by Google YOUTUBE API
-def youtubeChecker(youtube_id):
-    try:
-        urlAPI = "https://www.googleapis.com/youtube/v3/videos?part=status&id=%s&key=AIzaSyAOBqTeqHaI1JTXzJNfQOzZZ-rMGmALHBw"%youtube_id
-        response = urllib.urlopen(urlAPI)
-        result = json.loads(response.read())
-        if result["items"] == []:
-            return None,None
-        else:
-            return result['items'][0]['status']['uploadStatus'],result['items'][0]['status']['embeddable']
-    except:
-        return 0,0
 
 class htmlEdit(object):
     def __init__(self):
@@ -33,7 +21,7 @@ class htmlEdit(object):
         return txt_HTML, counter
 
     def youtubeEmbeddedMaker(self,htmlText):
-        # Get Youtube URLs and Youtube ID
+        # Get Youtube URLs and Youtube ID from tag A
         #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
         #pattern = re.compile(r'(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|v/|.+\?v=)?([^&=%\?]{11})')
         pattern = re.compile(r'(href=")(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
@@ -51,21 +39,39 @@ class htmlEdit(object):
         youtube_already_embed =[]
         start_pos = 0
 
+        # URL to hyperlink counter
+        counter2 = 0
+
         # Extract Youtube IDs from iFrames
         soup = BeautifulSoup(htmlText,"html.parser")
         ifr_yids =[ifr['src'][-11:] for ifr in soup.findAll('iframe') if ifr.has_attr('src') if re.search(re.compile('youtu'),ifr['src'])!=None]
+
+
+        # Get Youtube URLs FROM text of tag A
+        pattern2 = re.compile(r'(>)(https?://)?(www\.)?(youtube|youtu)(\.)(com|be)(/)(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
+        yt_url_txt = re.findall(pattern2,htmlText) # component
+        #print yt_url_txt
+        yt_urls_txt = [''.join(c[1:]) for c in yt_url_txt]
+        #print yt_urls_txt
         
 
         for yt_url, yt_id in yt_urls:
 
             # check YOUTUBE URL status
-            uploadStatus,embeddable = youtubeChecker(yt_id)
+            uploadStatus,embeddable,title = youtube_api.youtubeChecker(yt_id)
             if uploadStatus == None or uploadStatus == 0:
                 youtube_broken_links.append(yt_url)
                 continue
             if uploadStatus == 'processed' and embeddable == False:
                 youtube_notallow_embed.append(yt_url)
                 continue
+
+            # URL to hyperlink
+            if yt_url in yt_urls_txt:
+                htmlText = self.url2hyperlink(htmlText,yt_url,title)
+            counter2 += 1
+            #print counter2
+            #print title
 
             # check if YOUTUBE URL is already embedded
             if yt_id in ifr_yids:
@@ -74,16 +80,23 @@ class htmlEdit(object):
 
             htmlText = self.add_youtube_embed(htmlText,yt_url,yt_id)
             counter += 1
-            print counter
+            #print counter
+
+            
 
 
-        return htmlText, counter,youtube_notallow_embed, youtube_broken_links, youtube_already_embed
+        return htmlText, counter,youtube_notallow_embed, youtube_broken_links, youtube_already_embed, counter2
 
               
     def add_youtube_embed(self,htmlText,youtubeurl,youtubeid):
         pos = htmlText.find('<a href="%s'%youtubeurl) 
         add_iframe = '<br /><iframe width="560" height="315" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen=""></iframe>'%youtubeid
         txthtml = htmlText[:htmlText.find('</a>',pos) + 4] + add_iframe + htmlText[htmlText.find('</a>',pos) + 4:]      
+        return txthtml
+
+    def url2hyperlink(self,htmlText,youtubeurl,title):
+        pos = htmlText.find('>%s'%youtubeurl)
+        txthtml = htmlText[:pos+1] + "Youtube:"+ title + htmlText[pos+1+len(youtubeurl):]      
         return txthtml
 
 
@@ -107,23 +120,3 @@ class htmlEdit(object):
 
 
 
-
-'''txtHTML = 
-<html><a href="https://www.youtube.com/watch?v=x2hF6AnVAio" >
-<span><span>hello </span><span>OKKKK</span></span></a>
-<a href="https://www.youtube.com/watch?v=1ZPCCmZ6-3E">abc</a>
-<a href="https://www.youtube.com/watch?v=uv6ssCB03yw" target="_blank" width=1000>abc</a>
-<a href="https://www.youtube.com/watch?v=diG519dFVNs">abc</a>
-<a href="https://www.youtube.com/watch?v=v5_RwwecU4I">abc</a>
-</html>
-'''
-'''a = htmlEdit()
-#txt, counter = a.spanTagCleaner(txtHTML)
-#txt, counter = a.linkOpenNewTag(txtHTML)
-txt, counter,youtube_notallow_embed,youtube_broken_links = a.youtubeEmbeddedMaker(txtHTML)
-if youtube_notallow_embed:
-    print "Following links are not allowed to embed: ", youtube_notallow_embed
-if youtube_broken_links:
-    print "Following YOUTUBE links are broken links: ", youtube_broken_links
-print txt, counter
-'''
