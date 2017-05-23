@@ -14,6 +14,10 @@ The tool is developed to make instructional design job easier and simple.  This 
 - copy the github code to the local computer, either one of following should work:
   * download zip file
   * git clone
+  
+- Youtube API key
+  * apply Google API key in [here](https://developers.google.com/youtube/v3/getting-started)
+  * modify youtube_api.py, replace [YOUR-API-KEY] with the key you just applied.
 ## Guide:
 Before using this tool, you have to get the html source code first. Otherwise, it won't work.
 
